@@ -74,6 +74,20 @@ html {
   color: var(--color-stone-400);
 }
 
+/* 分节符：md 里的 `---`。用居中小圆点，比一条横贯全宽的线更适合文学正文 */
+.prose-cn hr {
+  border: 0;
+  margin: 3rem 0;
+  text-align: center;
+}
+
+.prose-cn hr::before {
+  content: "· · ·";
+  letter-spacing: 0.6em;
+  color: var(--color-stone-300);
+  font-size: 0.875rem;
+}
+
 .prose-cn em {
   font-style: italic;
 }
