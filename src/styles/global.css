@@ -12,13 +12,73 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-/* 中文正文：段首不缩进，靠段间距分隔 */
+/* ---------------------------------------------------------------
+   作品正文排版。单篇页给容器加 .prose-cn 即可，
+   样式集中在这里，不要散回 .astro 的行内变体里。
+   --------------------------------------------------------------- */
+
 .prose-cn {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 2;
+  color: var(--color-stone-700);
   text-wrap: pretty;
+}
+
+.prose-cn p {
+  margin: 1.5rem 0;
+}
+
+/* 分节数字：用衬线体会显得像正文，换回无衬线拉开层次 */
+.prose-cn h2 {
+  margin: 3.5rem 0 1.25rem;
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--color-stone-800);
+}
+
+.prose-cn blockquote {
+  margin: 2rem 0;
+  border-left: 2px solid var(--color-stone-300);
+  padding-left: 1.25rem;
+  color: var(--color-stone-500);
 }
 
 /* 引用块常用来放诗，保留 md 里的软换行——
    不然四行五言会被折叠成一整行。靠行尾两个空格太脆弱，改用 CSS。 */
 .prose-cn blockquote p {
   white-space: pre-line;
+}
+
+/* Tailwind 的 preflight 会清掉列表符号，这里补回来 */
+.prose-cn ul,
+.prose-cn ol {
+  margin: 1.5rem 0;
+  padding-left: 1.5em;
+}
+
+.prose-cn ul {
+  list-style: disc;
+}
+
+.prose-cn ol {
+  list-style: decimal;
+}
+
+.prose-cn li {
+  margin: 0.4rem 0;
+}
+
+.prose-cn li::marker {
+  color: var(--color-stone-400);
+}
+
+.prose-cn em {
+  font-style: italic;
+}
+
+.prose-cn strong {
+  font-weight: 600;
+  color: var(--color-stone-900);
 }
