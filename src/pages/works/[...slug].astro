@@ -1,0 +1,78 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { render } from 'astro:content';
+import { getWorks, formatDate } from '../../lib/works';
+
+export async function getStaticPaths() {
+  const works = await getWorks();
+  return works.map((work) => ({ params: { slug: work.id }, props: { work } }));
+}
+
+const { work } = Astro.props;
+const { Content } = await render(work);
+const d = work.data;
+---
+
+<Layout title={d.title} description={d.origin ?? d.title}>
+  <article>
+    <header class="mb-12 border-b border-stone-200/70 pb-8">
+      <h1 class="text-2xl leading-snug font-medium tracking-wide">{d.title}</h1>
+      {d.title_en && <p class="mt-2 text-sm text-stone-400 italic">{d.title_en}</p>}
+      <div class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-400">
+        <span>{d.genre}</span>
+        <span>·</span>
+        <span>{d.words.toLocaleString()} 字</span>
+        <span>·</span>
+        <span>{formatDate(d.published)} 首发于{d.venue}</span>
+      </div>
+      {d.origin && <p class="mt-3 text-sm text-stone-500">{d.origin}</p>}
+    </header>
+
+    <div
+      class="prose-cn max-w-none font-serif text-[1.0625rem] leading-[2] text-stone-700 [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:font-sans [&_h2]:text-lg [&_h2]:font-medium [&_h2]:text-stone-800 [&_p]:my-6 [&_blockquote]:border-l-2 [&_blockquote]:border-stone-300 [&_blockquote]:pl-5 [&_blockquote]:text-stone-500"
+    >
+      <Content />
+    </div>
+
+    <footer class="mt-16 border-t border-stone-200/70 pt-8 text-sm text-stone-500">
+      <dl class="space-y-2">
+        {
+          d.created && (
+            <div class="flex gap-4">
+              <dt class="w-20 shrink-0 text-stone-400">创作</dt>
+              <dd>
+                {formatDate(d.created)}
+                {d.finished && d.finished.valueOf() !== d.created.valueOf() && (
+                  <> – {formatDate(d.finished)}</>
+                )}
+              </dd>
+            </div>
+          )
+        }
+        <div class="flex gap-4">
+          <dt class="w-20 shrink-0 text-stone-400">原创发表</dt>
+          <dd>
+            {formatDate(d.published)}　{d.venue}
+            {d.published_as && <span class="text-stone-400">　题为《{d.published_as}》</span>}
+          </dd>
+        </div>
+        {
+          d.reposts.map((r) => (
+            <div class="flex gap-4">
+              <dt class="w-20 shrink-0 text-stone-400">转发</dt>
+              <dd>
+                {formatDate(r.date)}　{r.venue}
+                {r.as && <span class="text-stone-400">　题为《{r.as}》</span>}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="mt-10">
+        <a href="/works/" class="text-stone-500 transition-colors hover:text-stone-900">
+          ← 全部作品
+        </a>
+      </p>
+    </footer>
+  </article>
+</Layout>

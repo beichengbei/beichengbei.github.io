@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getWorks, formatDate } from '../lib/works';
+
+const works = (await getWorks()).slice(0, 5);
+---
+
+<Layout>
+  <section class="mb-20">
+    <h1 class="text-3xl font-medium tracking-wide">贝贝成</h1>
+    <p class="mt-3 text-stone-500">写小说，写散文，读认知科学。</p>
+    <p class="mt-8 max-w-xl leading-loose text-stone-600">
+      罗切斯特大学计算语言学硕士在读。这里存放我这些年写完并发表过的作品——
+      小说、散文、读书笔记。写得慢，但一篇是一篇。
+    </p>
+  </section>
+
+  <section>
+    <div class="mb-6 flex items-baseline justify-between border-b border-stone-200/70 pb-3">
+      <h2 class="text-sm tracking-widest text-stone-400">近期作品</h2>
+      <a href="/works/" class="text-sm text-stone-500 transition-colors hover:text-stone-900">
+        全部作品 →
+      </a>
+    </div>
+
+    {
+      works.length === 0 ? (
+        <p class="py-8 text-sm text-stone-400">还没有已发布的作品。</p>
+      ) : (
+        <ul class="space-y-1">
+          {works.map((w) => (
+            <li>
+              <a
+                href={`/works/${w.id}/`}
+                class="group flex items-baseline gap-4 rounded py-3 transition-colors hover:bg-stone-100/70"
+              >
+                <time class="w-24 shrink-0 text-sm tabular-nums text-stone-400">
+                  {formatDate(w.data.published)}
+                </time>
+                <span class="text-stone-700 transition-colors group-hover:text-stone-900">
+                  {w.data.title}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</Layout>

@@ -1,0 +1,65 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = '贝贝成的个人作品集' } = Astro.props;
+const siteName = '贝贝成';
+const fullTitle = title ? `${title} · ${siteName}` : `${siteName} · 个人作品集`;
+
+const nav = [
+  { href: '/', label: '首页' },
+  { href: '/works/', label: '作品' },
+  { href: '/about/', label: '简介' },
+];
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="min-h-screen bg-stone-50 text-stone-800 antialiased">
+    <header class="border-b border-stone-200/70">
+      <div class="mx-auto flex max-w-3xl items-baseline justify-between px-6 py-6">
+        <a href="/" class="flex items-baseline gap-3">
+          <span class="text-lg font-medium tracking-wide">{siteName}</span>
+          <span class="text-xs text-stone-400">用作品说话</span>
+        </a>
+        <nav class="flex gap-6 text-sm">
+          {
+            nav.map(({ href, label }) => (
+              <a
+                href={href}
+                class:list={[
+                  'transition-colors hover:text-stone-900',
+                  path === href ? 'text-stone-900' : 'text-stone-500',
+                ]}
+              >
+                {label}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-3xl px-6 py-14">
+      <slot />
+    </main>
+
+    <footer class="border-t border-stone-200/70">
+      <div class="mx-auto max-w-3xl px-6 py-8 text-xs text-stone-400">
+        © {new Date().getFullYear()} 贝贝成
+      </div>
+    </footer>
+  </body>
+</html>
