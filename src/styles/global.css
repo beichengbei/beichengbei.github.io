@@ -16,3 +16,9 @@ html {
 .prose-cn {
   text-wrap: pretty;
 }
+
+/* 引用块常用来放诗，保留 md 里的软换行——
+   不然四行五言会被折叠成一整行。靠行尾两个空格太脆弱，改用 CSS。 */
+.prose-cn blockquote p {
+  white-space: pre-line;
+}
