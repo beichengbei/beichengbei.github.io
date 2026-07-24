@@ -20,6 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: withastro/action@v3
+        with:
+          # 该 action 默认 Node 20，而 Astro 7 要求 >=22.12.0，不指定会构建失败
+          node-version: 22
 
   deploy:
     needs: build
