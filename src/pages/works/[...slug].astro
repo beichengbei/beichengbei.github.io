@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { render } from 'astro:content';
-import { getWorks, formatDate } from '../../lib/works';
+import { getWorks, workDate, formatDate } from '../../lib/works';
 
 export async function getStaticPaths() {
   const works = await getWorks();
@@ -11,6 +11,7 @@ export async function getStaticPaths() {
 const { work } = Astro.props;
 const { Content } = await render(work);
 const d = work.data;
+const shown = workDate(work);
 ---
 
 <Layout title={d.title} description={d.origin ?? d.title}>
@@ -22,8 +23,17 @@ const d = work.data;
         <span>{d.genre}</span>
         <span>·</span>
         <span>{d.words.toLocaleString()} 字</span>
-        <span>·</span>
-        <span>{formatDate(d.published)} 首发于{d.venue}</span>
+        {
+          shown && (
+            <>
+              <span>·</span>
+              <span>
+                {formatDate(shown)}
+                {d.venue ? ` 首发于${d.venue}` : ''}
+              </span>
+            </>
+          )
+        }
       </div>
       {d.origin && <p class="mt-3 text-sm text-stone-500">{d.origin}</p>}
     </header>
@@ -47,13 +57,18 @@ const d = work.data;
             </div>
           )
         }
-        <div class="flex gap-4">
-          <dt class="w-20 shrink-0 text-stone-400">原创发表</dt>
-          <dd>
-            {formatDate(d.published)}　{d.venue}
-            {d.published_as && <span class="text-stone-400">　题为《{d.published_as}》</span>}
-          </dd>
-        </div>
+        {
+          d.published && (
+            <div class="flex gap-4">
+              <dt class="w-20 shrink-0 text-stone-400">原创发表</dt>
+              <dd>
+                {formatDate(d.published)}
+                {d.venue ? `　${d.venue}` : ''}
+                {d.published_as && <span class="text-stone-400">　题为《{d.published_as}》</span>}
+              </dd>
+            </div>
+          )
+        }
         {
           d.reposts.map((r) => (
             <div class="flex gap-4">

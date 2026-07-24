@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getWorks, formatDate } from '../../lib/works';
+import { getWorks, workDate, formatDate } from '../../lib/works';
 
 const works = await getWorks();
 const totalWords = works.reduce((sum, w) => sum + w.data.words, 0);
@@ -24,7 +24,7 @@ const totalWords = works.reduce((sum, w) => sum + w.data.words, 0);
             <a href={`/works/${w.id}/`} class="group block">
               <div class="flex items-baseline gap-4">
                 <time class="w-24 shrink-0 text-sm tabular-nums text-stone-400">
-                  {formatDate(w.data.published)}
+                  {workDate(w) ? formatDate(workDate(w)!) : '—'}
                 </time>
                 <h2 class="text-lg text-stone-800 transition-colors group-hover:text-stone-950">
                   {w.data.title}
@@ -35,7 +35,7 @@ const totalWords = works.reduce((sum, w) => sum + w.data.words, 0);
                 <span>·</span>
                 <span>{w.data.words.toLocaleString()} 字</span>
                 <span>·</span>
-                <span>{w.data.venue}</span>
+                <span>{w.data.venue ?? '未标注平台'}</span>
                 {w.data.draft && (
                   <>
                     <span>·</span>

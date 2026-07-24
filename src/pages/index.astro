@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getWorks, formatDate } from '../lib/works';
+import { getWorks, workDate, formatDate } from '../lib/works';
 
 const works = (await getWorks()).slice(0, 5);
 ---
@@ -35,7 +35,7 @@ const works = (await getWorks()).slice(0, 5);
                 class="group flex items-baseline gap-4 rounded py-3 transition-colors hover:bg-stone-100/70"
               >
                 <time class="w-24 shrink-0 text-sm tabular-nums text-stone-400">
-                  {formatDate(w.data.published)}
+                  {workDate(w) ? formatDate(workDate(w)!) : '—'}
                 </time>
                 <span class="text-stone-700 transition-colors group-hover:text-stone-900">
                   {w.data.title}

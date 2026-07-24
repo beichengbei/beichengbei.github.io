@@ -18,8 +18,9 @@ const works = defineCollection({
     words: z.number().int().positive(),
     created: z.coerce.date().optional(),
     finished: z.coerce.date().optional(),
-    published: z.coerce.date(),
-    venue: z.enum(['初火创作', '计算语言实践基地', '开智学堂']),
+    // 未发表的作品这两项留空；列表排序会退回 finished / created
+    published: z.coerce.date().optional(),
+    venue: z.enum(['初火创作', '计算语言实践基地', '开智学堂']).optional(),
     origin: z.string().optional(),
     reposts: z
       .array(
