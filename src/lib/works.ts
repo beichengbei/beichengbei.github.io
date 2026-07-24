@@ -2,9 +2,13 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Work = CollectionEntry<'works'>;
 
-/** 排序与显示用的日期：优先原创发表日，未发表则退回完成日、创作日 */
+/**
+ * 列表的排序与显示日期：作品集按「什么时候写的」排，不按什么时候发的。
+ * 优先写完那天，没记录就退回起笔日，都没有才用发表日。
+ * 详情页顶部那行小字不走这里——它署的是发表信息，另算。
+ */
 export function workDate(w: Work): Date | undefined {
-  return w.data.published ?? w.data.finished ?? w.data.created;
+  return w.data.finished ?? w.data.created ?? w.data.published;
 }
 
 /** 按日期倒序；生产环境隐藏草稿，开发环境全部显示 */
@@ -18,5 +22,5 @@ export async function getWorks(): Promise<Work[]> {
  * 用本地时区取值会退回前一天，所以必须走 UTC getter。
  */
 export function formatDate(d: Date): string {
-  return `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1).padStart(2, '0')}.${String(d.getUTCDate()).padStart(2, '0')}`;
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`;
 }

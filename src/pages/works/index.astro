@@ -35,7 +35,8 @@ const totalWords = works.reduce((sum, w) => sum + w.data.words, 0);
                 <span>·</span>
                 <span>{w.data.words.toLocaleString()} 字</span>
                 <span>·</span>
-                <span>{w.data.venue ?? '未标注平台'}</span>
+                {/* 转发平台比原创平台更有分量，有转发就显示转发平台 */}
+                <span>{w.data.reposts.at(-1)?.venue ?? w.data.venue ?? '未标注平台'}</span>
                 {w.data.draft && (
                   <>
                     <span>·</span>
@@ -43,9 +44,6 @@ const totalWords = works.reduce((sum, w) => sum + w.data.words, 0);
                   </>
                 )}
               </div>
-              {w.data.origin && (
-                <p class="mt-2 pl-28 text-sm text-stone-500">{w.data.origin}</p>
-              )}
             </a>
           </li>
         ))}

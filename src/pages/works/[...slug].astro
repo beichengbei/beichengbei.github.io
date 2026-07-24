@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { render } from 'astro:content';
-import { getWorks, workDate, formatDate } from '../../lib/works';
+import { getWorks, formatDate } from '../../lib/works';
 
 export async function getStaticPaths() {
   const works = await getWorks();
@@ -11,26 +11,41 @@ export async function getStaticPaths() {
 const { work } = Astro.props;
 const { Content } = await render(work);
 const d = work.data;
-const shown = workDate(work);
+
+// 只有独立主页的平台带链接；计算语言实践基地没有主页，按名查不到就退回纯文本
+const VENUE_URL: Record<string, string> = {
+  开智学堂: 'https://openmindclub.com/',
+  初火创作: 'https://chuhuo.cc',
+};
+const venueLink = 'underline decoration-stone-300 underline-offset-4 transition-colors hover:text-stone-900';
+
+// 创作日只署一个：写完的那天。起止区间没必要
+const written = d.finished ?? d.created;
+
+// 头部只署一次发表记录，取最有分量的那个：有转发就用转发平台，否则用原创首发。
+// 只认发表日，不走 workDate()——那个已改为按创作日排序，拿它配平台会写出
+// 「2021.05.21 首发于初火创作」这种假话（那天是写完，不是发表）。完整履历在页脚。
+const latestRepost = d.reposts.at(-1);
+const byline = latestRepost
+  ? `${formatDate(latestRepost.date)} 发表于${latestRepost.venue}`
+  : d.published
+    ? `${formatDate(d.published)}${d.venue ? ` 首发于${d.venue}` : ''}`
+    : '';
 ---
 
 <Layout title={d.title} description={d.origin ?? d.title}>
   <article>
     <header class="mb-12 border-b border-stone-200/70 pb-8">
       <h1 class="text-2xl leading-snug font-medium tracking-wide">{d.title}</h1>
-      {d.title_en && <p class="mt-2 text-sm text-stone-400 italic">{d.title_en}</p>}
       <div class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-400">
         <span>{d.genre}</span>
         <span>·</span>
         <span>{d.words.toLocaleString()} 字</span>
         {
-          shown && (
+          byline && (
             <>
               <span>·</span>
-              <span>
-                {formatDate(shown)}
-                {d.venue ? ` 首发于${d.venue}` : ''}
-              </span>
+              <span>{byline}</span>
             </>
           )
         }
@@ -45,15 +60,10 @@ const shown = workDate(work);
     <footer class="mt-16 border-t border-stone-200/70 pt-8 text-sm text-stone-500">
       <dl class="space-y-2">
         {
-          d.created && (
+          written && (
             <div class="flex gap-4">
               <dt class="w-20 shrink-0 text-stone-400">创作</dt>
-              <dd>
-                {formatDate(d.created)}
-                {d.finished && d.finished.valueOf() !== d.created.valueOf() && (
-                  <> – {formatDate(d.finished)}</>
-                )}
-              </dd>
+              <dd>{formatDate(written)}</dd>
             </div>
           )
         }
@@ -63,7 +73,23 @@ const shown = workDate(work);
               <dt class="w-20 shrink-0 text-stone-400">原创发表</dt>
               <dd>
                 {formatDate(d.published)}
-                {d.venue ? `　${d.venue}` : ''}
+                {d.venue && (
+                  <>
+                    {'　'}
+                    {VENUE_URL[d.venue] ? (
+                      <a
+                        href={VENUE_URL[d.venue]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class={venueLink}
+                      >
+                        {d.venue}
+                      </a>
+                    ) : (
+                      d.venue
+                    )}
+                  </>
+                )}
                 {d.published_as && <span class="text-stone-400">　题为《{d.published_as}》</span>}
               </dd>
             </div>
@@ -74,7 +100,20 @@ const shown = workDate(work);
             <div class="flex gap-4">
               <dt class="w-20 shrink-0 text-stone-400">转发</dt>
               <dd>
-                {formatDate(r.date)}　{r.venue}
+                {formatDate(r.date)}
+                {'　'}
+                {VENUE_URL[r.venue] ? (
+                  <a
+                    href={VENUE_URL[r.venue]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class={venueLink}
+                  >
+                    {r.venue}
+                  </a>
+                ) : (
+                  r.venue
+                )}
                 {r.as && <span class="text-stone-400">　题为《{r.as}》</span>}
               </dd>
             </div>

@@ -1,9 +1,12 @@
 @import "tailwindcss";
 
+/* 全站系统黑体，不加载任何 web 字体——字体栈照搬 yangzhiping.com：
+   macOS/iOS 落苹方，Windows 落微软雅黑，Linux 落文泉驿。
+   正文同样走 --font-sans；--font-serif 留着备用，想让正文回宋体只需改 .prose-cn 一处。 */
 @theme {
   --font-sans:
-    -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "Noto Sans SC", sans-serif;
+    -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei",
+    sans-serif;
   --font-serif:
     "Songti SC", "Source Han Serif SC", "Noto Serif SC", Georgia, "Times New Roman", serif;
 }
@@ -18,7 +21,7 @@ html {
    --------------------------------------------------------------- */
 
 .prose-cn {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: 1.0625rem;
   line-height: 2;
   color: var(--color-stone-700);
@@ -29,10 +32,9 @@ html {
   margin: 1.5rem 0;
 }
 
-/* 分节数字：用衬线体会显得像正文，换回无衬线拉开层次 */
+/* 分节数字：全站同一套黑体，与正文的层次靠字号、字重和颜色拉开 */
 .prose-cn h2 {
   margin: 3.5rem 0 1.25rem;
-  font-family: var(--font-sans);
   font-size: 1.125rem;
   font-weight: 500;
   color: var(--color-stone-800);
