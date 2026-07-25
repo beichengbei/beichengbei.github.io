@@ -8,7 +8,7 @@ interface Props {
 
 const { title, description = '贝贝成的个人作品集' } = Astro.props;
 const siteName = '贝贝成';
-const fullTitle = title ? `${title} · ${siteName}` : `${siteName} · 个人作品集`;
+const fullTitle = title ? `${title} · ${siteName}` : `${siteName} · Beicheng Bei`;
 
 const nav = [
   { href: '/', label: '首页' },
@@ -26,28 +26,88 @@ const path = Astro.url.pathname;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- 必须 is:inline 且留在 head：在首帧绘制前定好主题，
+         否则深色偏好的读者会看到一闪的白底。 -->
+    <script is:inline>
+      (function () {
+        let t = localStorage.getItem('theme');
+        // 比选两套暗色时存过 dark-navy / dark-sepia，统一迁到 dark，
+        // 否则旧值匹配不上任何主题，选过暗色的人刷新会掉回亮版
+        if (t === 'dark-navy' || t === 'dark-sepia') {
+          t = 'dark';
+          localStorage.setItem('theme', t);
+        }
+        if (t) document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
   </head>
-  <body class="min-h-screen bg-stone-50 text-stone-800 antialiased">
-    <header class="border-b border-stone-200/70">
+  <body class="bg-bg text-ink min-h-screen antialiased">
+    <header class="border-line border-b">
       <div class="mx-auto flex max-w-3xl items-baseline justify-between px-6 py-6">
         <a href="/" class="flex items-baseline gap-3">
           <span class="text-lg font-medium tracking-wide">{siteName}</span>
-          <span class="text-xs text-stone-400">用作品说话</span>
+          <span class="text-ink-faint text-xs">用作品说话</span>
         </a>
-        <nav class="flex gap-6 text-sm">
+        <nav class="flex items-center gap-6 text-sm">
           {
             nav.map(({ href, label }) => (
               <a
                 href={href}
                 class:list={[
-                  'transition-colors hover:text-stone-900',
-                  path === href ? 'text-stone-900' : 'text-stone-500',
+                  'transition-colors hover:text-ink-strong',
+                  path === href ? 'text-ink-strong' : 'text-ink-soft',
                 ]}
               >
                 {label}
               </a>
             ))
           }
+          <button
+            id="theme-toggle"
+            type="button"
+            aria-label="切换深浅配色"
+            title="切换深浅配色"
+            class="text-ink-faint hover:text-ink-strong transition-colors"
+          >
+            <svg
+              class="icon-sun"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg
+              class="icon-moon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
         </nav>
       </div>
     </header>
@@ -56,10 +116,26 @@ const path = Astro.url.pathname;
       <slot />
     </main>
 
-    <footer class="border-t border-stone-200/70">
-      <div class="mx-auto max-w-3xl px-6 py-8 text-xs text-stone-400">
+    <footer class="border-line border-t">
+      <div class="text-ink-faint mx-auto max-w-3xl px-6 py-8 text-xs">
         © {new Date().getFullYear()} 贝贝成
       </div>
     </footer>
+
+    <script is:inline>
+      (function () {
+        const btn = document.getElementById('theme-toggle');
+        // 没存过偏好就按系统外观判断当前是哪一版，点一下才写入 localStorage
+        const current = () =>
+          document.documentElement.getAttribute('data-theme') ||
+          (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+        btn.addEventListener('click', () => {
+          const next = current() === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+        });
+      })();
+    </script>
   </body>
 </html>

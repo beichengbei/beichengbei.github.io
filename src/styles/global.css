@@ -11,8 +11,80 @@
     "Songti SC", "Source Han Serif SC", "Noto Serif SC", Georgia, "Times New Roman", serif;
 }
 
+/* ---------------------------------------------------------------
+   配色：一律走语义变量，页面里不要再出现 stone-* 这类具体色。
+   改配色只改这一段，Tailwind 的 bg-bg / text-ink / border-line
+   等工具类都引用同名变量，会跟着主题走。
+
+   亮版是天光下的纸，暗版是黑暗里的一点光——对应作品里反复出现的
+   母题（黑暗森林里的远方光点、「黑暗中射进一束光」、驶向黎明）。
+   --------------------------------------------------------------- */
+
+/* 亮版：清新温润的暖白——底色留一点暖意（色相 43°）但明度拉到 97%，
+   墨用暖中性灰而不是褐墨，分隔线也压淡。括号内是与底色的对比度，全部过 WCAG AA。 */
+@theme {
+  --color-bg: #fbf9f4; /* 暖白底，色相 43°、明度 97% */
+  --color-surface: #f4f1e9; /* 卡片 hover 底 */
+  --color-line: #e7e2d8; /* 分隔线、边框、链接下划线（装饰级） */
+  --color-ink: #38352f; /* 正文，暖中性灰（11.6:1） */
+  --color-ink-strong: #201d18; /* 标题、hover 落点（16.0:1） */
+  --color-ink-soft: #6f6b63; /* 次要文字（5.0:1） */
+  --color-ink-faint: #75716a; /* 元信息小字（4.6:1）。底色越淡它越要深，再调浅就掉出 AA */
+  --color-draft: #a85a1b; /* 草稿标记，赭石（4.8:1） */
+}
+
+/* 暗版：夜海靛蓝——甲板、海面、黎明前。
+   两处重复是必要的：媒体查询管「没点过按钮时跟随系统」，属性选择器管「手动选定」，
+   CSS 里没法把这两个选择器合并。改色记得两边一起改。 */
+:root[data-theme="dark"] {
+  --color-bg: #0f1419;
+  --color-surface: #171c24;
+  --color-line: #252b35;
+  --color-ink: #c9cdd6;
+  --color-ink-strong: #edf0f4;
+  --color-ink-soft: #8b929e;
+  --color-ink-faint: #7c8492;
+  --color-draft: #d9a55f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-bg: #0f1419;
+    --color-surface: #171c24;
+    --color-line: #252b35;
+    --color-ink: #c9cdd6;
+    --color-ink-strong: #edf0f4;
+    --color-ink-soft: #8b929e;
+    --color-ink-faint: #7c8492;
+    --color-draft: #d9a55f;
+  }
+}
+
 html {
   -webkit-text-size-adjust: 100%;
+}
+
+/* 深浅切换按钮：亮版露月亮（点了转暗），暗版露太阳 */
+#theme-toggle .icon-sun {
+  display: none;
+}
+
+:root[data-theme="dark"] #theme-toggle .icon-sun {
+  display: block;
+}
+
+:root[data-theme="dark"] #theme-toggle .icon-moon {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) #theme-toggle .icon-sun {
+    display: block;
+  }
+
+  :root:not([data-theme]) #theme-toggle .icon-moon {
+    display: none;
+  }
 }
 
 /* ---------------------------------------------------------------
@@ -24,7 +96,7 @@ html {
   font-family: var(--font-sans);
   font-size: 1.0625rem;
   line-height: 2;
-  color: var(--color-stone-700);
+  color: var(--color-ink);
   text-wrap: pretty;
 }
 
@@ -37,14 +109,14 @@ html {
   margin: 3.5rem 0 1.25rem;
   font-size: 1.125rem;
   font-weight: 500;
-  color: var(--color-stone-800);
+  color: var(--color-ink-strong);
 }
 
 .prose-cn blockquote {
   margin: 2rem 0;
-  border-left: 2px solid var(--color-stone-300);
+  border-left: 2px solid var(--color-line);
   padding-left: 1.25rem;
-  color: var(--color-stone-500);
+  color: var(--color-ink-soft);
 }
 
 /* 引用块常用来放诗，保留 md 里的软换行——
@@ -73,7 +145,7 @@ html {
 }
 
 .prose-cn li::marker {
-  color: var(--color-stone-400);
+  color: var(--color-ink-faint);
 }
 
 /* 分节符：md 里的 `---`。用居中小圆点，比一条横贯全宽的线更适合文学正文 */
@@ -86,7 +158,7 @@ html {
 .prose-cn hr::before {
   content: "· · ·";
   letter-spacing: 0.6em;
-  color: var(--color-stone-300);
+  color: var(--color-ink-faint);
   font-size: 0.875rem;
 }
 
@@ -96,5 +168,5 @@ html {
 
 .prose-cn strong {
   font-weight: 600;
-  color: var(--color-stone-900);
+  color: var(--color-ink-strong);
 }

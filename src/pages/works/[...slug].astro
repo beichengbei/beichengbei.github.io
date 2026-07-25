@@ -17,7 +17,7 @@ const VENUE_URL: Record<string, string> = {
   开智学堂: 'https://openmindclub.com/',
   初火创作: 'https://chuhuo.cc',
 };
-const venueLink = 'underline decoration-stone-300 underline-offset-4 transition-colors hover:text-stone-900';
+const venueLink = 'underline decoration-line underline-offset-4 transition-colors hover:text-ink-strong';
 
 // 创作日只署一个：写完的那天。起止区间没必要
 const written = d.finished ?? d.created;
@@ -35,9 +35,9 @@ const byline = latestRepost
 
 <Layout title={d.title} description={d.origin ?? d.title}>
   <article>
-    <header class="mb-12 border-b border-stone-200/70 pb-8">
+    <header class="mb-12 border-b border-line pb-8">
       <h1 class="text-2xl leading-snug font-medium tracking-wide">{d.title}</h1>
-      <div class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-400">
+      <div class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-faint">
         <span>{d.genre}</span>
         <span>·</span>
         <span>{d.words.toLocaleString()} 字</span>
@@ -50,19 +50,19 @@ const byline = latestRepost
           )
         }
       </div>
-      {d.origin && <p class="mt-3 text-sm text-stone-500">{d.origin}</p>}
+      {d.origin && <p class="mt-3 text-sm text-ink-soft">{d.origin}</p>}
     </header>
 
     <div class="prose-cn">
       <Content />
     </div>
 
-    <footer class="mt-16 border-t border-stone-200/70 pt-8 text-sm text-stone-500">
+    <footer class="mt-16 border-t border-line pt-8 text-sm text-ink-soft">
       <dl class="space-y-2">
         {
           written && (
             <div class="flex gap-4">
-              <dt class="w-20 shrink-0 text-stone-400">创作</dt>
+              <dt class="w-20 shrink-0 text-ink-faint">创作</dt>
               <dd>{formatDate(written)}</dd>
             </div>
           )
@@ -70,7 +70,7 @@ const byline = latestRepost
         {
           d.published && (
             <div class="flex gap-4">
-              <dt class="w-20 shrink-0 text-stone-400">原创发表</dt>
+              <dt class="w-20 shrink-0 text-ink-faint">原创发表</dt>
               <dd>
                 {formatDate(d.published)}
                 {d.venue && (
@@ -90,7 +90,7 @@ const byline = latestRepost
                     )}
                   </>
                 )}
-                {d.published_as && <span class="text-stone-400">　题为《{d.published_as}》</span>}
+                {d.published_as && <span class="text-ink-faint">　题为《{d.published_as}》</span>}
               </dd>
             </div>
           )
@@ -98,7 +98,7 @@ const byline = latestRepost
         {
           d.reposts.map((r) => (
             <div class="flex gap-4">
-              <dt class="w-20 shrink-0 text-stone-400">转发</dt>
+              <dt class="w-20 shrink-0 text-ink-faint">转发</dt>
               <dd>
                 {formatDate(r.date)}
                 {'　'}
@@ -114,14 +114,14 @@ const byline = latestRepost
                 ) : (
                   r.venue
                 )}
-                {r.as && <span class="text-stone-400">　题为《{r.as}》</span>}
+                {r.as && <span class="text-ink-faint">　题为《{r.as}》</span>}
               </dd>
             </div>
           ))
         }
       </dl>
       <p class="mt-10">
-        <a href="/works/" class="text-stone-500 transition-colors hover:text-stone-900">
+        <a href="/works/" class="text-ink-soft transition-colors hover:text-ink-strong">
           ← 全部作品
         </a>
       </p>

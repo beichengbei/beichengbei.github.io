@@ -6,8 +6,18 @@ import Layout from '../layouts/Layout.astro';
   <article class="max-w-xl">
     <h1 class="text-2xl font-medium tracking-wide">简介</h1>
 
+    <!-- 圆形靠 CSS 裁，图片本身是方形 JPEG：想换回方形或圆角只改 class，不用重导图。
+         写死 width/height 是为了占位，避免图片加载完成时正文跳动。 -->
+    <img
+      src="/portrait.jpg"
+      alt="贝贝成"
+      width="160"
+      height="160"
+      class="mt-10 h-40 w-40 rounded-full object-cover"
+    />
+
     <!-- 每段写在一行：源码里断行会渲染成一个空格，夹在中文之间很显眼 -->
-    <div class="mt-10 space-y-6 leading-loose text-stone-600">
+    <div class="mt-10 space-y-6 leading-loose text-ink-soft">
       <p>
         贝贝成，罗切斯特大学（University of Rochester）计算语言学硕士在读，本科毕业于渥太华大学数学系。
       </p>
@@ -20,26 +30,33 @@ import Layout from '../layouts/Layout.astro';
           href="https://yangzhiping.com/"
           target="_blank"
           rel="noopener noreferrer"
-          class="underline decoration-stone-300 underline-offset-4 transition-colors hover:text-stone-900"
+          class="underline decoration-line underline-offset-4 transition-colors hover:text-ink-strong"
           >阳志平</a
         >老师提出一个问题：「如何用尽量少的语言促进人亲近与宇宙、社会、自然的关系？」她把它写下来，夹在日记本中，此后写的每一篇，多少都是在回应它。好奇宇宙，所以写作。
       </p>
     </div>
 
-    <div class="mt-14 border-t border-stone-200/70 pt-10 leading-loose text-stone-500">
+    <div class="mt-14 border-t border-line pt-10 leading-loose text-ink-soft">
       <p>
-        夏日的傍晚，我躺在草坪上，把自己交给大地。<br />天空没有尽头，甲板漂浮在海面上，<br
-        />向没有尽头的远方驶去。<br />父母是遥远的港湾，爱人是身后的船舱。<br
-        />我手掌舵，肩扛旗，载着满船的书，驶向黎明。
+        夏日傍晚，我躺在草坪上，把自己交给大地。<br />天空没有尽头，甲板漂浮在海面上，向没有尽头的远方驶去。<br
+        />父母是遥远的港湾，爱人是身后的船舱。<br />我手掌舵，肩扛旗，载着满船的书，驶向黎明。
       </p>
     </div>
 
-    <div class="mt-14 border-t border-stone-200/70 pt-8 text-sm">
+    <div class="mt-14 flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-8 text-sm">
       <a
         href="mailto:bbei@ur.rochester.edu"
-        class="text-stone-500 transition-colors hover:text-stone-900"
+        class="text-ink-soft transition-colors hover:text-ink-strong"
       >
         bbei@ur.rochester.edu
+      </a>
+      <a
+        href="https://github.com/beichengbei"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-ink-soft transition-colors hover:text-ink-strong"
+      >
+        github.com/beichengbei
       </a>
     </div>
   </article>

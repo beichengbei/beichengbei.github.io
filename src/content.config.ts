@@ -14,7 +14,7 @@ const works = defineCollection({
     title_en: z.string().optional(),
     // 发表时被编辑改过的标题
     published_as: z.string().optional(),
-    genre: z.enum(['短篇小说', '叙事+信息型文本', '信息型文本']),
+    genre: z.enum(['叙事型文本', '叙事+信息型文本', '信息型文本']),
     words: z.number().int().positive(),
     created: z.coerce.date().optional(),
     finished: z.coerce.date().optional(),
