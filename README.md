@@ -1,6 +1,6 @@
 # 贝贝成
 
-存放已发表的中文作品。→ https://beichengbei.github.io
+存放已发表的中文作品。→ https://beichengbei.com
 
 ## 作品
 
