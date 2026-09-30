@@ -32,6 +32,8 @@ const works = defineCollection({
           date: z.coerce.date(),
           venue: z.string(),
           as: z.string().optional(),
+          // 转发的原文链接，页脚「题为《…》」据此加链接
+          url: z.string().url().optional(),
         }),
       )
       .default([]),
