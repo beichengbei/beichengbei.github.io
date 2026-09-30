@@ -150,6 +150,10 @@ html {
 
 /* 分节符：md 里的 `---`。用居中小圆点，比一条横贯全宽的线更适合文学正文 */
 .prose-cn hr {
+  /* preflight 把 hr 设成 height: 0，Chrome 默认又带 overflow: hidden，
+     两者叠加会把 ::before 的小圆点整个裁掉 */
+  height: auto;
+  overflow: visible;
   border: 0;
   margin: 3rem 0;
   text-align: center;
@@ -169,4 +173,27 @@ html {
 .prose-cn strong {
   font-weight: 600;
   color: var(--color-ink-strong);
+}
+
+/* preflight 把链接重置成与正文同色无下划线，不补这条读者看不出能点。
+   写法仿详情页页脚的平台链接（细下划线，hover 加深），但下划线用 ink-faint：
+   页脚那种 --color-line 在正文里淡到看不出是链接 */
+.prose-cn a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--color-ink-faint);
+  transition: color 0.15s;
+}
+
+.prose-cn a:hover {
+  color: var(--color-ink-strong);
+}
+
+/* 文末附注：网站独有、公众号原文没有的补充说明，不计字数。
+   放在 md 末尾的 `---` 之后，写成 <aside class="work-note">…</aside> */
+.prose-cn .work-note {
+  display: block;
+  margin: 1.5rem 0;
+  font-size: 0.9375rem;
+  color: var(--color-ink-soft);
 }
