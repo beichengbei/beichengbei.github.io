@@ -20,7 +20,11 @@ const works = defineCollection({
     finished: z.coerce.date().optional(),
     // 未发表的作品这两项留空；列表排序会退回 finished / created
     published: z.coerce.date().optional(),
-    venue: z.enum(['初火创作', '计算语言实践基地', '开智学堂']).optional(),
+    venue: z.enum(['初火创作', '计算语言实践基地', '开智学堂', '开智学堂公众号']).optional(),
+    // 单篇覆盖平台默认链接（默认见详情页 VENUE_URL），比如链到平台的专栏页而非首页
+    venue_url: z.string().url().optional(),
+    // 原创首发的原文链接，页脚「题为《…》」据此加链接
+    published_url: z.string().url().optional(),
     origin: z.string().optional(),
     reposts: z
       .array(

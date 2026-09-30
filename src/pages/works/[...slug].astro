@@ -76,9 +76,9 @@ const byline = latestRepost
                 {d.venue && (
                   <>
                     {'　'}
-                    {VENUE_URL[d.venue] ? (
+                    {(d.venue_url ?? VENUE_URL[d.venue]) ? (
                       <a
-                        href={VENUE_URL[d.venue]}
+                        href={d.venue_url ?? VENUE_URL[d.venue]}
                         target="_blank"
                         rel="noopener noreferrer"
                         class={venueLink}
@@ -90,7 +90,19 @@ const byline = latestRepost
                     )}
                   </>
                 )}
-                {d.published_as && <span class="text-ink-faint">　题为《{d.published_as}》</span>}
+                {d.published_as && (
+                  <span class="text-ink-faint">
+                    　题为《
+                    {d.published_url ? (
+                      <a href={d.published_url} target="_blank" rel="noopener noreferrer" class={venueLink}>
+                        {d.published_as}
+                      </a>
+                    ) : (
+                      d.published_as
+                    )}
+                    》
+                  </span>
+                )}
               </dd>
             </div>
           )
