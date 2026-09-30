@@ -31,6 +31,7 @@
   --color-ink-soft: #6f6b63; /* 次要文字（5.0:1） */
   --color-ink-faint: #75716a; /* 元信息小字（4.6:1）。底色越淡它越要深，再调浅就掉出 AA */
   --color-draft: #a85a1b; /* 草稿标记，赭石（4.8:1） */
+  --color-link: #4a7a1c; /* 链接绿：品牌绿 #8DC63F 同色相压暗，品牌绿本身在亮底只有 1.9:1（4.9:1） */
 }
 
 /* 暗版：夜海靛蓝——甲板、海面、黎明前。
@@ -45,6 +46,7 @@
   --color-ink-soft: #8b929e;
   --color-ink-faint: #7c8492;
   --color-draft: #d9a55f;
+  --color-link: #8dc63f; /* 暗底直接用品牌绿（9.1:1） */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -57,6 +59,7 @@
     --color-ink-soft: #8b929e;
     --color-ink-faint: #7c8492;
     --color-draft: #d9a55f;
+  --color-link: #8dc63f; /* 暗底直接用品牌绿（9.1:1） */
   }
 }
 
@@ -176,9 +179,10 @@ html {
 }
 
 /* preflight 把链接重置成与正文同色无下划线，不补这条读者看不出能点。
-   写法仿详情页页脚的平台链接（细下划线，hover 加深），但下划线用 ink-faint：
-   页脚那种 --color-line 在正文里淡到看不出是链接 */
+   正文链接用链接绿（与简介页一致）+ 细下划线，hover 加深。
+   作品页脚的平台/原文链接是元信息，有意保持灰色，不走这条 */
 .prose-cn a {
+  color: var(--color-link);
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-color: var(--color-ink-faint);
