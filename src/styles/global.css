@@ -193,6 +193,14 @@ html {
   color: var(--color-ink-strong);
 }
 
+/* 竖图（海报、长截图）不让它撑满栏宽：限高后按比例缩窄并居中。
+   横图在栏宽下高度都不到 43rem，不受影响 */
+.prose-cn img {
+  width: auto;
+  max-height: 43rem;
+  margin-inline: auto;
+}
+
 /* 文末附注：网站独有、公众号原文没有的补充说明，不计字数。
    放在 md 末尾的 `---` 之后，写成 <aside class="work-note">…</aside> */
 .prose-cn .work-note {
