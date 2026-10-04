@@ -193,11 +193,11 @@ html {
   color: var(--color-ink-strong);
 }
 
-/* 竖图（海报、长截图）不让它撑满栏宽：限高后按比例缩窄并居中。
-   横图在栏宽下高度都不到 43rem，不受影响 */
+/* 竖图和接近方形的图（海报、论文首页截图）不让它撑满栏宽：限高后按比例缩窄并居中。
+   4:3 及更扁的横图在栏宽下高度不到 36rem，不受影响 */
 .prose-cn img {
   width: auto;
-  max-height: 43rem;
+  max-height: 36rem;
   margin-inline: auto;
 }
 
