@@ -201,6 +201,12 @@ html {
   margin-inline: auto;
 }
 
+/* 单张横图嫌大时用：md 里写 <div class="img-narrow">（空一行）![…](…)（空一行）</div>，
+   图仍走 Astro 压缩，只是宽度收到 32rem 并居中 */
+.prose-cn .img-narrow img {
+  max-width: min(100%, 32rem);
+}
+
 /* 文末附注：网站独有、公众号原文没有的补充说明，不计字数。
    放在 md 末尾的 `---` 之后，写成 <aside class="work-note">…</aside> */
 .prose-cn .work-note {
