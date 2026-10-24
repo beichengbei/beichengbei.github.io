@@ -36,7 +36,7 @@ const works = (await getWorks()).slice(0, 5);
                 class="group flex items-baseline gap-4 rounded py-3 transition-colors hover:bg-surface"
               >
                 <time class="w-24 shrink-0 text-sm tabular-nums text-ink-faint">
-                  {workDate(w) ? formatDate(workDate(w)!) : '—'}
+                  {formatDate(workDate(w))}
                 </time>
                 <span class="text-ink transition-colors group-hover:text-ink-strong">
                   {w.data.title}

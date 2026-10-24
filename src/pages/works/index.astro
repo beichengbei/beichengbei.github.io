@@ -24,7 +24,7 @@ const totalWords = works.reduce((sum, w) => sum + w.data.words, 0);
             <a href={`/works/${w.id}/`} class="group block">
               <div class="flex items-baseline gap-4">
                 <time class="w-24 shrink-0 text-sm tabular-nums text-ink-faint">
-                  {workDate(w) ? formatDate(workDate(w)!) : '—'}
+                  {formatDate(workDate(w))}
                 </time>
                 <h2 class="text-lg text-ink transition-colors group-hover:text-ink-strong">
                   {w.data.title}

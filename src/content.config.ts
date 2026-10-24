@@ -16,10 +16,10 @@ const works = defineCollection({
     published_as: z.string().optional(),
     genre: z.enum(['叙事型文本', '叙事+信息型文本', '信息型文本']),
     words: z.number().int().positive(),
-    created: z.coerce.date().optional(),
+    // 创作、原创发表两个日期每篇必填；不知道起笔日就填写完那天
+    created: z.coerce.date(),
     finished: z.coerce.date().optional(),
-    // 未发表的作品这两项留空；列表排序会退回 finished / created
-    published: z.coerce.date().optional(),
+    published: z.coerce.date(),
     venue: z.enum(['初火创作', '计算语言实践基地', '开智学堂', '开智学堂公众号']).optional(),
     // 单篇覆盖平台默认链接（默认见详情页 VENUE_URL），比如链到平台的专栏页而非首页
     venue_url: z.string().url().optional(),

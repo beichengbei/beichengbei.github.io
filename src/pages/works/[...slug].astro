@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { render } from 'astro:content';
-import { getWorks, formatDate } from '../../lib/works';
+import { getWorks, workDate, formatDate } from '../../lib/works';
 
 export async function getStaticPaths() {
   const works = await getWorks();
@@ -20,18 +20,13 @@ const VENUE_URL: Record<string, string> = {
 };
 const venueLink = 'text-link underline decoration-line underline-offset-4 transition-colors hover:text-ink-strong';
 
-// 创作日只署一个：写完的那天。起止区间没必要
-const written = d.finished ?? d.created;
-
 // 头部只署一次发表记录，取最有分量的那个：有转发就用转发平台，否则用原创首发。
 // 只认发表日，不走 workDate()——那个已改为按创作日排序，拿它配平台会写出
 // 「2021.05.21 首发于初火创作」这种假话（那天是写完，不是发表）。完整履历在页脚。
 const latestRepost = d.reposts.at(-1);
 const byline = latestRepost
   ? `${formatDate(latestRepost.date)} 发表于${latestRepost.venue}`
-  : d.published
-    ? `${formatDate(d.published)}${d.venue ? ` 首发于${d.venue}` : ''}`
-    : '';
+  : `${formatDate(d.published)}${d.venue ? ` 首发于${d.venue}` : ''}`;
 ---
 
 <Layout title={d.title} description={d.origin ?? d.title}>
@@ -60,54 +55,47 @@ const byline = latestRepost
 
     <footer class="mt-16 border-t border-line pt-8 text-sm text-ink-soft">
       <dl class="space-y-2">
-        {
-          written && (
-            <div class="flex gap-4">
-              <dt class="w-20 shrink-0 text-ink-faint">创作</dt>
-              <dd>{formatDate(written)}</dd>
-            </div>
-          )
-        }
-        {
-          d.published && (
-            <div class="flex gap-4">
-              <dt class="w-20 shrink-0 text-ink-faint">原创发表</dt>
-              <dd>
-                {formatDate(d.published)}
-                {d.venue && (
-                  <>
-                    {'　'}
-                    {(d.venue_url ?? VENUE_URL[d.venue]) ? (
-                      <a
-                        href={d.venue_url ?? VENUE_URL[d.venue]}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class={venueLink}
-                      >
-                        {d.venue}
-                      </a>
-                    ) : (
-                      d.venue
-                    )}
-                  </>
+        {/* 创作、原创发表每篇必有；创作日只署一个（写完那天），与列表一致 */}
+        <div class="flex gap-4">
+          <dt class="w-20 shrink-0 text-ink-faint">创作</dt>
+          <dd>{formatDate(workDate(work))}</dd>
+        </div>
+        <div class="flex gap-4">
+          <dt class="w-20 shrink-0 text-ink-faint">原创发表</dt>
+          <dd>
+            {formatDate(d.published)}
+            {d.venue && (
+              <>
+                {'　'}
+                {(d.venue_url ?? VENUE_URL[d.venue]) ? (
+                  <a
+                    href={d.venue_url ?? VENUE_URL[d.venue]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class={venueLink}
+                  >
+                    {d.venue}
+                  </a>
+                ) : (
+                  d.venue
                 )}
-                {d.published_as && (
-                  <span class="text-ink-faint">
-                    　题为《
-                    {d.published_url ? (
-                      <a href={d.published_url} target="_blank" rel="noopener noreferrer" class={venueLink}>
-                        {d.published_as}
-                      </a>
-                    ) : (
-                      d.published_as
-                    )}
-                    》
-                  </span>
+              </>
+            )}
+            {d.published_as && (
+              <span class="text-ink-faint">
+                　题为《
+                {d.published_url ? (
+                  <a href={d.published_url} target="_blank" rel="noopener noreferrer" class={venueLink}>
+                    {d.published_as}
+                  </a>
+                ) : (
+                  d.published_as
                 )}
-              </dd>
-            </div>
-          )
-        }
+                》
+              </span>
+            )}
+          </dd>
+        </div>
         {
           d.reposts.map((r) => (
             <div class="flex gap-4">
