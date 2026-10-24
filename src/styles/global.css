@@ -32,6 +32,8 @@
   --color-ink-faint: #75716a; /* 元信息小字（4.6:1）。底色越淡它越要深，再调浅就掉出 AA */
   --color-draft: #a85a1b; /* 草稿标记，赭石（4.8:1） */
   --color-link: #4a7a1c; /* 链接绿：品牌绿 #8DC63F 同色相压暗，品牌绿本身在亮底只有 1.9:1（4.9:1） */
+  --color-card: #eef5e1; /* 人物小卡底：品牌绿极浅调，灰字在上面 4.7:1 */
+  --color-card-line: #d5e6bc; /* 人物小卡边框 */
 }
 
 /* 暗版：夜海靛蓝——甲板、海面、黎明前。
@@ -47,6 +49,8 @@
   --color-ink-faint: #7c8492;
   --color-draft: #d9a55f;
   --color-link: #8dc63f; /* 暗底直接用品牌绿（9.1:1） */
+  --color-card: #18221a; /* 暗版小卡底：压暗的绿，灰字 5.2:1 */
+  --color-card-line: #2a3a26;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -60,6 +64,8 @@
     --color-ink-faint: #7c8492;
     --color-draft: #d9a55f;
   --color-link: #8dc63f; /* 暗底直接用品牌绿（9.1:1） */
+    --color-card: #18221a;
+    --color-card-line: #2a3a26;
   }
 }
 
@@ -205,6 +211,52 @@ html {
    图仍走 Astro 压缩，只是宽度收到 32rem 并居中 */
 .prose-cn .img-narrow img {
   max-width: min(100%, 32rem);
+}
+
+/* 带图注的配图：md 里写 <figure>（空一行）![…](…)（空一行）<figcaption>…</figcaption>（空一行）</figure>。
+   图比正文默认的再小一档，图注灰色小字居中，不计字数 */
+.prose-cn figure {
+  margin: 2rem 0;
+}
+
+.prose-cn figure p {
+  margin: 0;
+}
+
+.prose-cn figure img {
+  max-height: 24rem;
+}
+
+/* 文末人物小卡：附注的卡片版，同样网站独有、不计字数。
+   写成 <aside class="work-note person-card"><p>…</p>…</aside>，内部直接写 HTML 段落 */
+.prose-cn .person-card {
+  margin: 2rem 0;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--color-card-line);
+  border-radius: 0.5rem;
+  background: var(--color-card);
+  line-height: 1.8;
+}
+
+.prose-cn .person-card p {
+  margin: 0 0 0.75rem;
+}
+
+.prose-cn .person-card p:last-child {
+  margin-bottom: 0;
+}
+
+.prose-cn .person-card .card-title {
+  font-size: 1rem;
+  color: var(--color-ink-strong);
+}
+
+.prose-cn figcaption {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-ink-faint);
 }
 
 /* 文末附注：网站独有、公众号原文没有的补充说明，不计字数。
