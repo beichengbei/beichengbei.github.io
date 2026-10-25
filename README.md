@@ -10,14 +10,4 @@
 个人作品集，详见 <a href="https://beichengbei.com">beichengbei.com</a>。
 </p>
 
-## 开发
-
-```bash
-npm run dev      # 本地预览，草稿可见
-npm run build    # 构建 + 校验 frontmatter
-```
-
-作品在 `作品/` 下，一篇一个 `.md`，配图放 `作品/images/<slug>/`；frontmatter 字段见 `src/content.config.ts`。
-`slug` 决定网址，发布后尽量不改；真要改，把旧地址加进 `astro.config.mjs` 的 `redirects`。
-
-Astro 7 + Tailwind 4，静态输出，GitHub Actions 部署到 Pages。
+<p align="center"><sub>Astro 构建，部署于 GitHub Pages。</sub></p>
